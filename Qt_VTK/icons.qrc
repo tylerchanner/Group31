@@ -3,11 +3,11 @@
     <qresource prefix="/Icons"/>
     <qresource prefix="/icons"/>
     <qresource prefix="/">
-        <file>D:\Group31-master\Qt_VTK\icons/print.png</file>
-        <file>D:\Group31-master\Qt_VTK\icons/help.png</file>
-        <file>D:\Group31-master\Qt_VTK\icons/filesave.png</file>
-        <file>D:\Group31-master\Qt_VTK\icons/fileopen.png</file>
-        <file>D:\Group31-master\Qt_VTK\icons/stopVR.png</file>
-        <file>D:\Group31-master\Qt_VTK\icons/startVR.png</file>
+        <file>print.png</file>
+        <file>help.png</file>
+        <file>filesave.png</file>
+        <file>fileopen.png</file>
+        <file>stopVR.png</file>
+        <file>startVR.png</file>
     </qresource>
 </RCC>
