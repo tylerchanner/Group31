@@ -36,8 +36,8 @@ set(PROJECT_SOURCES
 	newgroupdialog.h
 	newgroupdialog.cpp
 	newgroupdialog.ui
-
-
+	VRRenderThread.cpp
+	VRRenderThread.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

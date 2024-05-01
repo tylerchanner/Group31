@@ -18,6 +18,9 @@
 #include "ModelPartList.h" 
 #include "ModelPart.h" 
 #include "NewGroupDialog.h"
+#include "VRRenderThread.h"
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,6 +44,7 @@ public:
 
     void updateRender();
     void updateRenderFromTree(const QModelIndex& index);
+    void updateRenderFromTreeVR(const QModelIndex& index);
     void applyPropertiesToPart(ModelPart* part, const QString& name, bool visibility, const QColor& color, bool updateName = true);
     void updateChildrenProperties(ModelPart* part, bool visibility, const QColor& color);
     void initializePartList();
@@ -54,6 +58,8 @@ public:
     void selectItemInTreeView(const QModelIndex& index);
 signals:
     void statusUpdateMessage(const QString& message, int timeout);
+    void startVR();  // Function to start VR
+
 
 public slots:
     void handleTreeClicked();
@@ -65,6 +71,7 @@ public slots:
     void removeActorsRecursively(ModelPart* part);
     void on_actionSearchItem_triggered();
     void addFloor();
+    void startVRRendering();
 
 private:
     Ui::MainWindow* ui; ///< User interface for the main window.
@@ -72,12 +79,14 @@ private:
     vtkSmartPointer<vtkRenderer> renderer; ///< Renderer for displaying VTK objects.
     vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow; ///< OpenGL render window for VTK rendering.
     vtkSmartPointer<vtkActor> floorActor;
-    QAction* actionNewGroup; ///< Action to create a new group in the tree view.
+    QAction* actionNewGroup; ///<        Action to create a new group in the tree view.
     NewGroupDialog* newGroupDialog; ///< Dialog for creating new groups.
     QAction* actionDeleteGroup; ///< Action to delete a selected group.
     QAction* actionItemOptions; ///< Action to modify item options.
     QAction* actionDeleteItem; ///< Action to delete a selected item.
     QAction* actionSearch_Items;
+
+    VRRenderThread* vrThread;
 };
 
 #endif // MAINWINDOW_H

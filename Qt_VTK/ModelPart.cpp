@@ -198,7 +198,7 @@ bool ModelPart::visible() {
  * @param fileName The path to the STL file.
  */
 void ModelPart::loadSTL(QString fileName) {
-    vtkNew<vtkSTLReader> reader;
+    reader = vtkSmartPointer<vtkSTLReader>::New();
     reader->SetFileName(fileName.toStdString().c_str());
     reader->Update();
 

@@ -12,6 +12,7 @@
 #include "ui_mainwindow.h"
 #include "OptionDialog.h"
 #include "NewGroupDialog.h"
+#include "VRRenderThread.h"
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkRenderer.h>
 #include <vtkCylinderSource.h>
@@ -27,6 +28,7 @@
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <QtConcurrent/QtConcurrentRun>
+
 
 
  /**
@@ -47,6 +49,9 @@ MainWindow::MainWindow(QWidget* parent) :
     setupActions();
     setupRenderer();
     connectSignals();
+    vrThread = new VRRenderThread(this);
+    connect(ui->pushButtonVrRender, &QPushButton::clicked, this, &MainWindow::startVRRendering);
+
 }
 
 /**
@@ -57,7 +62,11 @@ MainWindow::MainWindow(QWidget* parent) :
 MainWindow::~MainWindow() {
     delete ui;
     delete partList;
+    delete vrThread;
 }
+
+
+
 
 /**
  * @brief Initializes the part list model.
@@ -302,6 +311,35 @@ void MainWindow::updateRenderFromTree(const QModelIndex& index) {
     }
 }
 
+void MainWindow::updateRenderFromTreeVR(const QModelIndex& index) {
+    if (index.isValid()) {
+        ModelPart* selectedPart = static_cast<ModelPart*>(index.internalPointer());
+        if (selectedPart) {
+            vtkSmartPointer<vtkActor> newActor = selectedPart->getNewActor(); // Create a new actor for VR
+            if (newActor) {
+                vrThread->addActorOffline(newActor); // Add the new actor to VR
+            }
+        }
+        int rows = partList->rowCount(index);
+        for (int i = 0; i < rows; ++i) {
+            updateRenderFromTreeVR(partList->index(i, 0, index)); // Recursively add child actors
+        }
+    }
+}
+
+void MainWindow::startVRRendering() {
+    int topLevelItemCount = partList->rowCount(QModelIndex());
+    for (int i = 0; i < topLevelItemCount; ++i) {
+        QModelIndex topLevelIndex = partList->index(i, 0, QModelIndex());
+        updateRenderFromTreeVR(topLevelIndex);
+    }
+
+    if (vrThread && !vrThread->isRunning()) {
+        vrThread->start(); // Starting the VR rendering thread
+    }
+}
+
+
 /**
  * @brief Slot triggered to open and load files.
  *
@@ -450,6 +488,9 @@ void MainWindow::removeActorsRecursively(ModelPart* part) {
 }
 
 
+
+
+
 void MainWindow::on_actionSearchItem_triggered() {
     bool ok;
     QString searchTerm = QInputDialog::getText(this, tr("Search in TreeView"),
@@ -517,10 +558,4 @@ void MainWindow::addFloor() {
 
     renderer->AddActor(actor);
 }
-
-
-
-
-
-
 
