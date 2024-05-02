@@ -28,7 +28,8 @@
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <QtConcurrent/QtConcurrentRun>
-
+#include <vtkRenderer.h>
+#include <vtkLight.h>
 
 
  /**
@@ -135,6 +136,8 @@ void MainWindow::setupRenderer() {
     ui->vtkWidget->setRenderWindow(renderWindow);
     renderer = vtkSmartPointer<vtkRenderer>::New();
     renderWindow->AddRenderer(renderer);
+
+
 
     addFloor(); // Add the floor to the scene
 }
@@ -272,9 +275,13 @@ void MainWindow::updateRender() {
    
 
     int topLevelItemCount = partList->rowCount(QModelIndex());
+    
+
+   
     for (int i = 0; i < topLevelItemCount; ++i) {
         QModelIndex topLevelIndex = partList->index(i, 0, QModelIndex());
         updateRenderFromTree(topLevelIndex);
+        
     }
 
     renderer->ResetCamera();
@@ -283,7 +290,12 @@ void MainWindow::updateRender() {
     renderer->ResetCameraClippingRange();
     
     renderer->Render();
-    
+
+    if (vrThread->isRunning()) {
+        startVRRendering();
+    }
+
+ 
 }
 
 
@@ -328,15 +340,18 @@ void MainWindow::updateRenderFromTreeVR(const QModelIndex& index) {
 }
 
 void MainWindow::startVRRendering() {
+    
+   
+    vrThread->issueCommand(0, 0);
+
     int topLevelItemCount = partList->rowCount(QModelIndex());
     for (int i = 0; i < topLevelItemCount; ++i) {
         QModelIndex topLevelIndex = partList->index(i, 0, QModelIndex());
         updateRenderFromTreeVR(topLevelIndex);
     }
+    vrThread->start(); // Starting the VR rendering thread
+    
 
-    if (vrThread && !vrThread->isRunning()) {
-        vrThread->start(); // Starting the VR rendering thread
-    }
 }
 
 
