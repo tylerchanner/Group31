@@ -198,6 +198,7 @@ void VRRenderThread::run() {
 			t_last = std::chrono::steady_clock::now();
 		}
 	}
+	window->Finalize();
 }
 
 
