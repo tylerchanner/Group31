@@ -24,6 +24,7 @@
 #include <vtkOpenVRCamera.h>	
 #include <vtkActorCollection.h>
 #include <vtkCommand.h>
+#include <vtkLight.h>
 
 
 
@@ -45,6 +46,8 @@ public:
         ROTATE_Z
     } Command;
 
+
+    void setupLighting(double intensity, double position[3], double color[3]);
 
     /**  Constructor
       */
@@ -78,6 +81,7 @@ private:
     vtkSmartPointer<vtkOpenVRRenderWindowInteractor>    interactor;
     vtkSmartPointer<vtkOpenVRRenderer>                  renderer;
     vtkSmartPointer<vtkOpenVRCamera>                    camera;
+    vtkSmartPointer<vtkLight>                            light;
 
     /* Use to synchronise passing of data to VR thread */
     QMutex                                              mutex;      
