@@ -3,11 +3,11 @@
     <qresource prefix="/Icons"/>
     <qresource prefix="/icons"/>
     <qresource prefix="/">
-        <file>print.png</file>
-        <file>help.png</file>
-        <file>filesave.png</file>
-        <file>fileopen.png</file>
-        <file>stopVR.png</file>
-        <file>startVR.png</file>
+        <file>Icons/print.png</file>
+        <file>Icons/help.png</file>
+        <file>Icons/filesave.png</file>
+        <file>Icons/fileopen.png</file>
+        <file>Icons/stopVR.png</file>
+        <file>Icons/startVR.png</file>
     </qresource>
 </RCC>
