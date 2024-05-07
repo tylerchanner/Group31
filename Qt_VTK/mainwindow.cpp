@@ -349,13 +349,14 @@ void MainWindow::startVRRendering() {
         QModelIndex topLevelIndex = partList->index(i, 0, QModelIndex());
         updateRenderFromTreeVR(topLevelIndex);
     }
+    /*
     double intensity = 1.0;  // Example settings
     double position[3] = { 5, 5, 10 };
     double color[3] = { 1, 1, 1 };
     vrThread->setupLighting(intensity, position, color);
 
     vrThread->start(); // Starting the VR rendering thread
-    
+    */
 
 }
 

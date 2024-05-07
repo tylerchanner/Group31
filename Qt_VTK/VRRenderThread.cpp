@@ -28,7 +28,7 @@
 #include <vtkCallbackCommand.h>
 #include <vtkLight.h>
 
-
+/*
 void VRRenderThread::setupLighting(double intensity, double position[3], double color[3])
 {
 	QMutexLocker locker(&mutex);  // Ensure thread safety
@@ -41,6 +41,7 @@ void VRRenderThread::setupLighting(double intensity, double position[3], double 
 	light->SetPosition(position);
 	light->SetDiffuseColor(color);
 }
+*/
 
 /* The class constructor is called by MainWindow and runs in the primary program thread, this thread
  * will go on to handle the GUI (mouse clicks, etc). The OpenVRRenderWindowInteractor cannot be start()ed
